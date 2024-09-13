@@ -2,46 +2,67 @@
 
 {% block title %}BotHome - Home{% endblock title %}
 
-
 {% block content %}
-<div class="container" style="margin-top: 50px; max-height:100vh; overflow-y:scroll">
-    {% if not get_history %}
-    <h1 class="text-center">Hi {{request.user.username}} 👋, Let's Talk!🤖</h1>
-    {% endif %}
-    <ol class="list-group mt-5">
-        {% for history in get_history %}
-        <li class="list-group-item rounded d-flex justify-content-between align-items-start p-2 mb-3" style="background-color: white; color:#303030">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">You ({{history.user.username}}) </div>
-                {{history.messageInput}}
-            </div>
-        </li>
-        <li class="list-group-item rounded d-flex justify-content-between align-items-start p-2 mb-3" style="background-color: #6E00FF;color:white">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">AI bot </div>
-                {{history.bot_response}}
-            </div>
-        </li>
-        {% endfor %}
-    </ol>
-    <form action="" method="post" class="mt-3">
-        {% csrf_token %}
-        <label for="exampleFormControlTextarea1" class="form-label">Enter your prompt</label>
-        <div class="d-flex mb-3 gap-2">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="How can i help you?"
-                name="userInput"></textarea>
-            <button class="btn btn-dark btn-lg" type="submit" id="btn" style="width: 80px;"><i
-                    class="bi bi-send-fill"></i></button>
+<div class="container" style="display: flex; height: 100vh; width: 100vw; margin: 0; padding: 0; overflow: hidden;">
+    <div class="sidebar" style="width: 30%; background-color: #3cc47c; display: flex; flex-direction: column;">
+        <div class="profile" style="display: flex; align-items: center; padding: 20px; background-color: #2ebd6b;">
+            <img src="https://via.placeholder.com/50" alt="Profile Picture" style="border-radius: 50%; margin-right: 10px;">
+            <span class="profile-name" style="font-size: 18px; color: #fff;">{{ request.user.username }}</span>
         </div>
-        <div class="d-flex justify-content-center m-3 align-items-center gap-3">
-            {% if get_history %}
-            <a href="{% url 'deleteChat'  %}" class="btn btn-warning">Delete Chat <i class="bi bi-x-square"></i></a>
+        <div class="contacts" style="flex-grow: 1; overflow-y: auto;">
+            <div class="contact active" style="display: flex; align-items: center; padding: 10px 20px; background-color: #1a7e4e;">
+                <img src="https://via.placeholder.com/40" alt="AI" style="border-radius: 50%; margin-right: 10px;">
+                <span class="contact-name" style="flex-grow: 1; font-size: 16px; color: #fff;">AI</span>
+                <span class="contact-status" style="font-size: 12px; color: #ddd;">Online</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbox" style="flex-grow: 1; display: flex; flex-direction: column; background-color: #fff;">
+        <div class="chat-header" style="display: flex; align-items: center; padding: 20px; background-color: #3cc47c; color: #fff;">
+            <img src="https://via.placeholder.com/50" alt="AI" style="border-radius: 50%; margin-right: 10px;">
+            <span class="chat-name" style="font-size: 18px; flex-grow: 1;">AI</span>
+            <span class="chat-status" style="font-size: 14px;">Online</span>
+        </div>
+
+        <div class="chat-body" style="flex-grow: 1; padding: 20px; background-color: #e5f4e9; overflow-y: auto;">
+            {% if not get_history %}
+            <h1 class="text-center" style="font-size: 25px;">Hi {{request.user.username}} 👋, Let's Talk!🤖</h1>
             {% endif %}
-            <a href="{% url 'logout'  %}" class="link-danger text-decoration-none">Log out <i
-                    class="bi bi-door-open"></i></a>
+            <ol class="list-group mt-5">
+                {% for history in get_history %}
+                <li class="list-group-item rounded d-flex justify-content-between align-items-start p-2 mb-3" style="background-color: white; color:#303030">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">You ({{history.user.username}}) </div>
+                        {{history.messageInput}}
+                    </div>
+                </li>
+                <li class="list-group-item rounded d-flex justify-content-between align-items-start p-2 mb-3" style="background-color: #6E00FF;color:white">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">AI bot </div>
+                        {{history.bot_response}}
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
         </div>
 
-    </form>
-
+        <div class="chat-input" style="display: flex; align-items: center; padding: 20px; background-color: #fff; border-top: 1px solid #ddd;">
+            <form action="" method="post" style="flex-grow: 1;">
+                {% csrf_token %}
+                <label for="exampleFormControlTextarea1" class="form-label">Enter your prompt</label>
+                <div class="d-flex mb-3 gap-2">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="How can I help you?" name="userInput" style="flex-grow: 1; padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none;"></textarea>
+                    <button class="btn btn-dark btn-lg" type="submit" id="btn" style="width: 80px; background-color: #3cc47c; color: #fff; border-radius: 20px;"><i class="bi bi-send-fill"></i></button>
+                </div>
+                <div class="d-flex justify-content-center m-3 align-items-center gap-3">
+                    {% if get_history %}
+                    <a href="{% url 'deleteChat'  %}" class="btn btn-warning">Delete Chat <i class="bi bi-x-square"></i></a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock content %}
+

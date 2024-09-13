@@ -98,7 +98,7 @@ class LoginView(FormView):
         # Authenticate the user and log him/her in
         user = authenticate(username=username, password=password)
         login(self.request, user)
-        messages.success(self.request, "You are logged in")
+        # messages.success(self.request, "You are logged in")
         return response
     def form_invalid(self, form):
         for field, errors in form.errors.items():
@@ -116,9 +116,3 @@ def DeleteHistory(request):
     chatGptobjs.delete()
     messages.success(request, "All messages have been deleted")
     return redirect(request.META['HTTP_REFERER'])
-
-
-def logout_view(request):
-    logout(request)
-    messages.success(request, "Succesfully logged out")
-    return redirect("main")
